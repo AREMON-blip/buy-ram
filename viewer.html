@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Viewer</title>
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <header>
+        <a href="index.html">&larr; BACK</a>
+        <span id="title">Loading...</span>
+        <div style="width:40px"></div>
+    </header>
+
+    <div class="gallery-wrapper" id="container">
+        </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+
+        fetch('data.json')
+            .then(res => res.json())
+            .then(data => {
+                const item = data.find(x => x.id === id);
+                if(!item) return;
+
+                document.getElementById('title').innerText = item.name;
+                const box = document.getElementById('container');
+                
+                // Masukkan SEMUA gambar ke layar
+                item.files.forEach((f, i) => {
+                    box.innerHTML += `
+                        <div class="slide-item">
+                            <img src="${item.base_path}${f}" loading="lazy">
+                            <div class="page-num">${i+1} / ${item.files.length}</div>
+                        </div>
+                    `;
+                });
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gallery Home</title>
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <header><h1>MY GALLERY</h1></header>
+    <div class="grid" id="grid">Loading...</div>
+
+    <script>
+        fetch('data.json')
+            .then(res => res.json())
+            .then(data => {
+                const g = document.getElementById('grid');
+                g.innerHTML = '';
+                data.forEach(item => {
+                    // Ambil gambar pertama buat cover
+                    let cover = item.base_path + item.files[0];
+                    g.innerHTML += `
+                        <a href="viewer.html?id=${item.id}" class="card">
+                            <img src="${cover}">
+                            <h3>${item.name}</h3>
+                            <small>${item.files.length} Images</small>
+                        </a>
+                    `;
+                });
+            });
+    </script>
+</body>
+</html>
